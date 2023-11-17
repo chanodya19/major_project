@@ -1,0 +1,98 @@
+#!/bin/bash
+
+
+PROJROOT=~/major_project
+BINDIR=${PROJROOT}/01_bin
+DBDIR=${PROJROOT}/02_DB
+RAWDIR=${PROJROOT}/03_raw_data
+RESULTDIR=${PROJROOT}/04_results
+SCRPTDIR=${PROJROOT}/05_scripts
+
+if [[ ! -d ${BINDIR} ]]; then
+	mkdir -p ${BINDIR}
+fi
+
+if [[ ! -d ${DBDIR} ]]; then
+	mkdir -p ${DBDIR}
+fi
+
+if [[ ! -d ${RAWDIR} ]]; then
+	mkdir -p ${RAWDIR}
+fi
+
+if [[ ! -d ${RESULTDIR} ]]; then
+	mkdir -p ${RESULTDIR}
+fi
+
+if [[ ! -d ${SCRPTDIR} ]]; then
+	mkdir -p ${SCRPTDIR}
+fi
+
+if [[ ! -d ${PROJROOT} ]]; then
+	echo -e "Couldn't find ${PROJROOT}\n. Exiting now"
+	exit 1
+fi
+
+#make reference genome index
+cd ${DBDIR}
+STAR --runThreadN 2 --runMode genomeGenerate --genomeDir ${DBDIR}/TAIR10_STAR149 --genomeFastaFiles TAIR10_chrALL.fa --sjdbGTFfile TAIR10_GFF3_genes.gtf --sjdbOverhang 149 --genomeSAindexNbases 12
+
+#align against reference genoome. loop this for all samples 
+cd ${RESULTDIR}/03_aligned_data
+STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_data/Col0_SA_treated_0h_rep1.clean.fastq.gz \
+--readFilesCommand zcat \
+--runThreadN 2 --outSAMstrandField intronMotif --outSAMattributes All \
+--outFilterMismatchNoverLmax 0.03 --alignIntronMax 10000 --outSAMtype BAM SortedByCoordinate \
+--outFileNamePrefix Col0_0h_rep1. --quantMode GeneCounts
+
+
+STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_data/Col0_SA_treated_0h_rep2.clean.fastq.gz \
+--readFilesCommand zcat \
+--runThreadN 2 --outSAMstrandField intronMotif --outSAMattributes All \
+--outFilterMismatchNoverLmax 0.03 --alignIntronMax 10000 --outSAMtype BAM SortedByCoordinate \
+--outFileNamePrefix Col0_0h_rep2. --quantMode GeneCounts
+
+
+STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_data/Col0_SA_treated_0h_rep3.clean.fastq.gz \
+--readFilesCommand zcat \
+--runThreadN 2 --outSAMstrandField intronMotif --outSAMattributes All \
+--outFilterMismatchNoverLmax 0.03 --alignIntronMax 10000 --outSAMtype BAM SortedByCoordinate \
+--outFileNamePrefix Col0_0h_rep3. --quantMode GeneCounts
+
+
+
+STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_data/Col0_SA_treated_24h_rep1.clean.fastq.gz \
+--readFilesCommand zcat \
+--runThreadN 2 --outSAMstrandField intronMotif --outSAMattributes All \
+--outFilterMismatchNoverLmax 0.03 --alignIntronMax 10000 --outSAMtype BAM SortedByCoordinate \
+--outFileNamePrefix Col0_24h_rep1. --quantMode GeneCounts
+
+
+
+STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_data/Col0_SA_treated_24h_rep2.clean.fastq.gz \
+--readFilesCommand zcat \
+--runThreadN 2 --outSAMstrandField intronMotif --outSAMattributes All \
+--outFilterMismatchNoverLmax 0.03 --alignIntronMax 10000 --outSAMtype BAM SortedByCoordinate \
+--outFileNamePrefix Col0_24h_rep2. --quantMode GeneCounts
+
+
+STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_data/Col0_SA_treated_24h_rep3.clean.fastq.gz \
+--readFilesCommand zcat \
+--runThreadN 2 --outSAMstrandField intronMotif --outSAMattributes All \
+--outFilterMismatchNoverLmax 0.03 --alignIntronMax 10000 --outSAMtype BAM SortedByCoordinate \
+--outFileNamePrefix Col0_24h_rep3. --quantMode GeneCounts
+
+
+
+#viewing files in IGV
+
+cd ${RESULTDIR}/03_aligned_data
+samtools index Col0_0h_rep1.Aligned.sortedByCoord.out.bam
+samtools index Col0_0h_rep2.Aligned.sortedByCoord.out.bam
+samtools index Col0_0h_rep3.Aligned.sortedByCoord.out.bam
+samtools index Col0_24h_rep1.Aligned.sortedByCoord.out.bam
+samtools index Col0_24h_rep2.Aligned.sortedByCoord.out.bam
+samtools index Col0_24h_rep3.Aligned.sortedByCoord.out.bam
+
+
+echo Done
