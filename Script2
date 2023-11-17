@@ -1,0 +1,60 @@
+#!/bin/bash
+
+PROJROOT=~/major_project
+BINDIR=${PROJROOT}/01_bin
+DBDIR=${PROJROOT}/02_DB
+RAWDIR=${PROJROOT}/03_raw_data
+RESULTDIR=${PROJROOT}/04_results
+SCRPTDIR=${PROJROOT}/05_scripts
+
+if [[ ! -d ${BINDIR} ]]; then
+	mkdir -p ${BINDIR}
+fi
+
+if [[ ! -d ${DBDIR} ]]; then
+	mkdir -p ${DBDIR}
+fi
+
+if [[ ! -d ${RAWDIR} ]]; then
+	mkdir -p ${RAWDIR}
+fi
+
+if [[ ! -d ${RESULTDIR} ]]; then
+	mkdir -p ${RESULTDIR}
+fi
+
+if [[ ! -d ${SCRPTDIR} ]]; then
+	mkdir -p ${SCRPTDIR}
+fi
+
+if [[ ! -d ${PROJROOT} ]]; then
+	echo -e "Couldn't find ${PROJROOT}\n. Exiting now"
+	exit 1
+fi
+
+#make FASTQC analysis on raw data
+cd ${RESULTDIR}/01_QC
+fastqc -t 2 -o ./ ${RAWDIR}/Col0_SA_treated_24h_rep1.fastq.gz
+fastqc -t 2 -o ./ ${RAWDIR}/Col0_SA_treated_0h_rep3.fastq.gz
+
+#Adaptor and low-quality sequence trimming
+cd ${RESULTDIR}/02_clean_data
+# trim adaptor and low-quality sequences using cutadapt for one sample
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_0h_rep1.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_0h_rep1.fastq.gz 
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_0h_rep2.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_0h_rep2.fastq.gz 
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_0h_rep3.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_0h_rep3.fastq.gz 
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_24h_rep1.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_24h_rep1.fastq.gz 
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_24h_rep2.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_24h_rep2.fastq.gz 
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_24h_rep3.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_24h_rep3.fastq.gz 
+
+
+
+
+#make sure to add all of these replicates and do multiple cutadapst based on teh files you generate
+#now we do fastQC on cleaned reads
+cd ${RESULTDIR}/02_clean_data
+fastqc -t 2 -o ./ ${RESULTDIR}/02_clean_data/*.fastq.gz
+
+
+echo Done
