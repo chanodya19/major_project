@@ -1,0 +1,55 @@
+#!/bin/bash
+
+PROJROOT=~/major_project
+BINDIR=${PROJROOT}/01_bin
+DBDIR=${PROJROOT}/02_DB
+RAWDIR=${PROJROOT}/03_raw_data
+RESULTDIR=${PROJROOT}/04_results
+SCRPTDIR=${PROJROOT}/05_scripts
+
+if [[ ! -d ${BINDIR} ]]; then
+	mkdir -p ${BINDIR}
+fi
+
+if [[ ! -d ${DBDIR} ]]; then
+	mkdir -p ${DBDIR}
+fi
+
+if [[ ! -d ${RAWDIR} ]]; then
+	mkdir -p ${RAWDIR}
+fi
+
+if [[ ! -d ${RESULTDIR} ]]; then
+	mkdir -p ${RESULTDIR}
+fi
+
+if [[ ! -d ${SCRPTDIR} ]]; then
+	mkdir -p ${SCRPTDIR}
+fi
+
+if [[ ! -d ${PROJROOT} ]]; then
+	echo -e "Couldn't find ${PROJROOT}\n. Exiting now"
+	exit 1
+fi
+
+
+#lets other sub directories
+cd ${RESULTDIR}
+mkdir 01_QC 02_clean_data 03_aligned_data 04_DE
+
+#check how the tree looks 
+cd ~/
+tree ./major_project 
+
+
+#lets put the soft links of our data uploaded onto raw data folder
+cd ${RAWDIR} 
+ln -s /shared/data/major_project_2023/a1881267/*.fastq.gz ./
+
+#we will then upload the soft links of input DB and data files in our corresponding project folders: 
+cd ${DBDIR}
+ln -s /shared/data/Arabidopsis_TAIR10_genome/TAIR10_chrALL.fa ./
+ln -s /shared/data/Arabidopsis_TAIR10_genome/TAIR10_GFF3_genes.gtf ./
+
+
+echo Done
