@@ -24,7 +24,7 @@ date: "2023-11-16"
 output: html_document
 ---
 
-# Set up of libraries
+## Set up of libraries
 
 As shown below the libraries required for this was set up, including providing a black an white global plot setting. Note that throughout the Rmarkdown `echo = FALSE` parameter was not added to the code chunk to as I wanted the printing of the R code that helped generate the results.
 
@@ -50,7 +50,7 @@ rm(list = ls())
 theme_set(theme_bw())
 ```
 
-# Getting the gene annotation information
+## Getting the gene annotation information
 
 Gene annotation information was uploaded as shown below. This code below made the gene_anno_df data table that allows us to get the gene annotation information. Duplicates have been removed and the row names have been set. Model_name correlates to gene name. It provides us with a decription of the genes as well.
 
