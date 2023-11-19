@@ -1,6 +1,6 @@
 # major_project
 
-## Overview
+# Overview
 The major project asseses a subset of RNA-Seq data obtained from a gene expression study https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE182617.
 The subset of data being analysed includes Col 0 ecotype _Arabidopsis thaliana_ plants that were trated with Salicylic acid at timepoint 0h and 24h
 
@@ -16,7 +16,7 @@ Col0_SA_treated_24h_rep3.fastq.gz | 24h | Biological replicate 3 (rep3) of Arabi
 
 The final research goal was to identify the differentially expressed genes within the Salicylic acid hormone pathwayand different pathways regulated by salicylic acid.
 
-# Differential Expression analysis of genes.
+# Differential Expression Analysis.
 ---
 title: "DEanalysis"
 author: "Chano Ranwala"
