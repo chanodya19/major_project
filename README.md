@@ -71,7 +71,8 @@ star_dir <- file.path("~/major_project/04_results/03_aligned_data")
 count_files <- list.files(path = star_dir, pattern = "ReadsPerGene.out.tab$", full.names = T)
 ```
 
-A raw count of all the reads for each gene all the different replicates at 0h and 24 h were made. The final raw_count_mt data matrix displays the gene name (column 1) as the unique identified for each preceeding column. Each preceeding column ( columns 2-6) shows the reeds observed per gene per condition.
+A raw count of all the reads for each gene all the different replicates at 0h and 24 h were made. The final raw_count_mt data matrix displays the gene name (column 1) as the unique identified for each preceeding column. Each preceeding column ( columns 2-6) shows the reeds observed per gene per condition. 
+raw_count_df table was made alongside the Table1_reference_gene_raw_count.csv file in the 04_DE folder
 
 ```{r}
 firstFile_df <- read.delim(count_files[1], header = F)
@@ -101,9 +102,7 @@ write.csv(raw_count_df, file = "~/major_project/04_results/04_DE/Table1_referenc
 #count_genes file was made
 ```
 
-
-
-raw_count_df made alongside the Table1_reference_gene_raw_count.csv file in the 04_DE folder
+Different variables were allocated to the global environment.DGE list was constructed.
 
 ```{r}
 counts <- raw_count_mt
@@ -116,9 +115,6 @@ dgeList<- DGEList(counts = raw_count_mt,
     genes = count_genes)
 ```
 
-countrs made in Data. genes, made in data. Samokes and groups made in values
-
-DGE list made!
 ```{r}
 dgeList$samples %>%
   rownames_to_column("sample") %>%
@@ -171,7 +167,7 @@ Dataset was filltered that allowed only the genes with good abundances remained 
 dgeList <- dgeList[genes2keep, ]
 ```
 
-### dispersion calculation 
+### Dispersion calculation 
 
 The following desig shows a matrix that states which samples belong to which group. The dispersion was then estimated, which allowed to proceed with differential expression analysis.
 
