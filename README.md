@@ -5,7 +5,7 @@ The major project asseses a subset of RNA-Seq data obtained from a gene expressi
 The subset of data being analysed includes Col 0 ecotype _Arabidopsis thaliana_ plants that were trated with Salicylic acid at timepoint 0h and 24h
 
 Following replicates are present 
-File name | Treatment hour | FIle description 
+File name | Treatment hour | File description 
 --- | --- | ------- |
 Col0_SA_treated_0h_rep1.fastq.gz | 0h | Biological replicate 1 (rep1) of Arabidopsis Col-0 ecotype (Col0) treated with Salicylic Acid (SA) for 0 hours (0h)
 Col0_SA_treated_0h_rep2.fastq.gz | 0h | Biological replicate 2 (rep2) of Arabidopsis Col-0 ecotype (Col0) treated with Salicylic Acid (SA) for 0 hours (0h)
@@ -119,7 +119,6 @@ dgeList<- DGEList(counts = raw_count_mt,
 countrs made in Data. genes, made in data. Samokes and groups made in values
 
 DGE list made!
-
 ```{r}
 dgeList$samples %>%
   rownames_to_column("sample") %>%
@@ -128,25 +127,33 @@ dgeList$samples %>%
   ylab("Library size (millions)") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-this chart was made
+
+When sequencing the reads we recieve different number of genes mapped to the genome. Therefore we used the following command to normalise read counts based on the library of each sample. 
 
 ```{r}
 dgeList <- calcNormFactors(dgeList)
 ```
 
 
-something happened here god knows what it was
+## Statistical analysis based on DGEList
 
+Here below we used a multiple dimentional scaling plot to chec the overall gene expression across different samples. This generated the MDS plot.
 ```{r}
 cols = pal_npg("nrc", alpha=1)(2)
 plotMDS(dgeList, labels = dgeList$samples$type, col = cols[dgeList$samples$group])
 ```
 
+Our samples our grouped cirretcly as per the generated plot. Difefrent conditions ( 0h versus 24h) were grouped together. No different conditions were mixed together. A clear pattern of separation was noticed. 
+
+After the overall gene expression was determined, we utilised a counts per milllion factor to have a look at the normalised read conda value for each gene.
 ```{r}
 head(cpm(dgeList))
 ```
+This gives the first 6 genes and how they are expressed within samples.
 
+## Applying further adjustments and filtering
 
+FIltrations of low expression henees is bery important as it will allow the statistical power of the study to increase. The expression intensity of all genes in all samples were plotted against their density using the following command. Removed genes that express less than 1 intensity level (CPM ).A summary of the genes that fulfilled this condition was also checked
 
 ```{r}
 plotDensities(cpm(dgeList, log = TRUE), main = "all genes", legend = "topright")
@@ -154,18 +161,19 @@ genes2keep <- rowSums(cpm(dgeList) > 1) > 3
 summary(genes2keep)
 ```
 
-chart madeeee
+The final plot with the filtered genes were checked through the command below. 
 
 ```{r}
 plotDensities(cpm(dgeList, log = TRUE)[genes2keep, ], main = "fitered genes", legend = "topright")
 ```
-
-
-
+Dataset was filltered that allowed only the genes with good abundances remained in dgeList
 ```{r}
 dgeList <- dgeList[genes2keep, ]
 ```
 
+### dispersion calculation 
+
+The following desig shows a matrix that states which samples belong to which group. The dispersion was then estimated, which allowed to proceed with differential expression analysis.
 
 ```{r}
 design <- model.matrix(~0 + group, data = dgeList$samples)
