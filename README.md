@@ -16,7 +16,7 @@ Col0_SA_treated_24h_rep3.fastq.gz | 24h | Biological replicate 3 (rep3) of Arabi
 
 The final research goal was to identify the differentially expressed genes within the Salicylic acid hormone pathwayand different pathways regulated by salicylic acid.
 
-
+# Differential Expression analysis of genes.
 ---
 title: "DEanalysis"
 author: "Chano Ranwala"
@@ -181,12 +181,13 @@ design
 dgeList <- estimateDisp(dgeList, design = design)
 ```
 
+This below conducts a fishers exact test on the two 0h and 24 h group. Next a histogram was generated to see the number of genes that show a specific p value in the range from 0-1.0.
 
 ```{r}
 etResults <- exactTest(dgeList, pair = 1:2)$table
 hist(etResults[,"PValue"], breaks= 50)
 ```
-
+We then adjusted the p value using false Discovery Rate (FDR). 
 
 ```{r}
 etResults <- etResults %>%
@@ -195,6 +196,8 @@ etResults <- etResults %>%
   arrange(PValue) %>%
   as_tibble()
 ```
+
+In the final etResults table, I wanted to see which genes were overexpressed and which genes were downregulated using the code below.
 
 ```{r}
 positive_count <- sum(etResults[, 2] > 0)
@@ -207,16 +210,12 @@ cat("Negative count:", negative_count, "\n")
 
 This was for me to count how many genes were positively expressed and which were negatively expressed
 
-
-
-
-```{r}
-cpm(dgeList, log= TRUE)["AT5G48720",]
-```
+Finally, we make the tablewith signifcantly expressed genes. The FDR was set to 0.01 while the logFC was set to more than 1.
 
 ```{r}
 sigGenes <- filter(etResults, FDR< 0.01, abs(logFC) > 1)$Geneid
 ```
+The final CSV file with significant gene are now made. This is needed for further KEGG pathway analysis using DAVID. I also wanted to know how many signicant genes are present . 
 
 ```{r}
 write.csv(etResults[etResults$Geneid %in% sigGenes, ], 
@@ -231,9 +230,11 @@ num_sig_genes <- nrow(result_df)
 cat("Number of significant genes:", num_sig_genes)
 ```
 
+Next the pattern of logFC to expression level was demonstrated through a chart.
 ```{r}
 plotMD(dgeList, status = rownames(dgeList) %in% sigGenes)
 ```
+I laso made a volcano plot which plotted logFC values against p values as an alternative means of analysis.
 
 ```{r}
 etResults %>%
@@ -242,6 +243,9 @@ etResults %>%
   geom_point() +
   scale_colour_manual(values = c("grey50", "red"))
 ```
+## Glimma plot
+
+FInally a Glimma plot folder was made. This allowed aan intercative HTMP plot to be generated that shows all genes together alongside their information, relative nromalised expression value and expression at 0h versus 24h.
 
 ```{r}
 DEs <- decideTests(exactTest(dgeList), adjust.method = "fdr", p.value = 0.01, lfc = 1)
@@ -254,6 +258,4 @@ glMDPlot(exactTest(dgeList), counts = cpm(dgeList, log = TRUE),
         folder = "glimmer_plot", launch = FALSE)
 ```
 
-```{r}
 
-```
