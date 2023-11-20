@@ -34,8 +34,7 @@ fi
 
 #make FASTQC analysis on raw data
 cd ${RESULTDIR}/01_QC
-fastqc -t 2 -o ./ ${RAWDIR}/Col0_SA_treated_24h_rep1.fastq.gz
-fastqc -t 2 -o ./ ${RAWDIR}/Col0_SA_treated_0h_rep3.fastq.gz
+fastqc -t 2 -o ./ ${RAWDIR}/*.fastq.gz
 
 #Adaptor and low-quality sequence trimming
 cd ${RESULTDIR}/02_clean_data
