@@ -37,7 +37,7 @@ fi
 cd ${DBDIR}
 STAR --runThreadN 2 --runMode genomeGenerate --genomeDir ${DBDIR}/TAIR10_STAR149 --genomeFastaFiles TAIR10_chrALL.fa --sjdbGTFfile TAIR10_GFF3_genes.gtf --sjdbOverhang 149 --genomeSAindexNbases 12
 
-#align against reference genoome. loop this for all samples 
+#aligned the samples against the reference genome using STAR.
 cd ${RESULTDIR}/03_aligned_data
 STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_data/Col0_SA_treated_0h_rep1.clean.fastq.gz \
 --readFilesCommand zcat \
@@ -84,7 +84,7 @@ STAR --genomeDir ${DBDIR}/TAIR10_STAR149 --readFilesIn ${RESULTDIR}/02_clean_dat
 
 
 
-#viewing files in IGV
+#viewing files in IGV if needed later on
 
 cd ${RESULTDIR}/03_aligned_data
 samtools index Col0_0h_rep1.Aligned.sortedByCoord.out.bam
