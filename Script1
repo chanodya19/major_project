@@ -33,7 +33,7 @@ if [[ ! -d ${PROJROOT} ]]; then
 fi
 
 
-#lets other sub directories
+#making sub directories
 cd ${RESULTDIR}
 mkdir 01_QC 02_clean_data 03_aligned_data 04_DE
 
@@ -42,11 +42,11 @@ cd ~/
 tree ./major_project 
 
 
-#lets put the soft links of our data uploaded onto raw data folder
+#putting the soft links of our raw sequence data uploaded onto raw data folder
 cd ${RAWDIR} 
 ln -s /shared/data/major_project_2023/a1881267/*.fastq.gz ./
 
-#we will then upload the soft links of input DB and data files in our corresponding project folders: 
+#we will then upload the soft links of input DB and gff3 files in our corresponding project folders: 
 cd ${DBDIR}
 ln -s /shared/data/Arabidopsis_TAIR10_genome/TAIR10_chrALL.fa ./
 ln -s /shared/data/Arabidopsis_TAIR10_genome/TAIR10_GFF3_genes.gtf ./
