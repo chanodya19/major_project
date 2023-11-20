@@ -43,7 +43,6 @@ cd ${RESULTDIR}/02_clean_data
 cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_0h_rep1.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_0h_rep1.fastq.gz 
 cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_0h_rep2.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_0h_rep2.fastq.gz 
 cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_0h_rep3.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_0h_rep3.fastq.gz 
-
 cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_24h_rep1.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_24h_rep1.fastq.gz 
 cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_24h_rep2.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_24h_rep2.fastq.gz 
 cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -o Col0_SA_treated_24h_rep3.clean.fastq.gz --minimum-length 25 --cores=2 --quality-cutoff 20 ${RAWDIR}/Col0_SA_treated_24h_rep3.fastq.gz 
