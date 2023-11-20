@@ -18,9 +18,9 @@ The final research goal was to identify the differentially expressed genes withi
 
 # Differential Expression Analysis.
 ---
-title: "DEanalysis"
+title: "DEanalysis_a1881267"
 author: "Chano Ranwala"
-date: "2023-11-16"
+date: "2023-11-20"
 output: html_document
 ---
 
@@ -162,7 +162,8 @@ The final plot with the filtered genes were checked through the command below.
 ```{r}
 plotDensities(cpm(dgeList, log = TRUE)[genes2keep, ], main = "fitered genes", legend = "topright")
 ```
-Dataset was filltered that allowed only the genes with good abundances remained in dgeList.
+
+Dataset was filtered that allowed only the genes with good abundances remained in dgeList.
 ```{r}
 dgeList <- dgeList[genes2keep, ]
 ```
@@ -183,6 +184,7 @@ This below conducts a fishers exact test on the two 0h and 24 h group. Next a hi
 etResults <- exactTest(dgeList, pair = 1:2)$table
 hist(etResults[,"PValue"], breaks= 50)
 ```
+
 We then adjusted the p value using False Discovery Rate (FDR). 
 
 ```{r}
@@ -195,6 +197,7 @@ etResults <- etResults %>%
 
 In the final etResults table, I wanted to see which genes were overexpressed and which genes were down regulated using the code below. This was for me to count results many genes were positively expressed and which were negatively expressed, but these are from all the filtered genes, these counts are not a representation of the finalised significant results. 
 
+
 ```{r}
 positive_count <- sum(etResults[, 2] > 0)
 negative_count <- sum(etResults[, 2] < 0)
@@ -205,15 +208,12 @@ cat("Negative count:", negative_count, "\n")
 
 
 Finally, we make the table with significantly expressed genes. The FDR was set to 0.01 while the logFC was set to more than 1.
-I also checked how many significant genes are present and which are upregulated/downregulated.
+I also checked how many significant genes are present. The final CSV file with significant gene are now made. This is needed for further KEGG pathway analysis using DAVID.
+
 
 ```{r}
 sigGenes <- filter(etResults, FDR< 0.01, abs(logFC) > 1)$Geneid
-positive_count <- sum(sigGenes[, 2] > 0)
-negative_count <- sum(sigGenes[, 2] < 0)
-# Print the counts
-cat("Positive count:", positive_count, "\n")
-cat("Negative count:", negative_count, "\n")
+
 
 #write CSV file with significantly differentionally expressed genes
 write.csv(etResults[etResults$Geneid %in% sigGenes, ], 
@@ -223,16 +223,28 @@ result_df <- read.csv("~/major_project/04_results/04_DE/Table2_sigGenes.csv", he
 
 # Count the number of significant genes (excluding the header row)
 num_sig_genes <- nrow(result_df)
-
-# Print the number of significant genes
 cat("Number of significant genes:", num_sig_genes)
+
 ```
-The final CSV file with significant gene are now made. This is needed for further KEGG pathway analysis using DAVID.
+
+Now I checked out of those significant genes, which ones were upregulated ( positive count) and which were downregulated (negative count).
+
+```{r}
+# Print the number of significant genes
+positive_count <- sum(result_df[, 2] > 0)
+negative_count <- sum(result_df[, 2] < 0)
+
+# Print the counts
+cat("Positive count:", positive_count, "\n")
+cat("Negative count:", negative_count, "\n")
+```
 
 Next the pattern of logFC to expression level was demonstrated through a chart.
+
 ```{r}
 plotMD(dgeList, status = rownames(dgeList) %in% sigGenes)
 ```
+
 I also made a volcano plot which plotted logFC values against p values as an alternative means of analysis.
 
 ```{r}
@@ -242,6 +254,7 @@ etResults %>%
   geom_point() +
   scale_colour_manual(values = c("grey50", "red"))
 ```
+
 ## Glimma plot
 
 Finally a Glimma plot folder was made. This allowed an interactive HTML plot to be generated that shows all genes together alongside their information, relative normalised expression value and expression at 0h versus 24h.
