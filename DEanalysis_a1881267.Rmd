@@ -7,7 +7,7 @@ output: html_document
 
 ## Set up of libraries
 
-As shown below the libraries required for this was set up, including providing a black and white global plot setting. Note that throughout the Rmarkdown `echo = FALSE` parameter was not added to the code chunk to as I wanted the printing of the R code that helped generate the results.
+As shown below the libraries required for this was set up, including providing a black and white global plot setting. Note that throughout the Rmarkdown `echo = FALSE` parameter was not added to the code chunk to as I wanted the printing of the R code that helped generate the results. The file below highlights all the codes I used to do my analysis on the final article submission. The discussion and final analysis is discussed in the a1881267_majorproject article.
 
 
 ```{r warning=FALSE, message=FALSE}
