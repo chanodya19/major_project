@@ -100,7 +100,7 @@ write.csv(raw_count_df, file = "~/major_project/04_results/04_DE/Table1_referenc
 
 ```
 
-Different variables were allocated to the global environment. DGE list was constructed.
+Different variables were allocated to the global environment. DGE list construction was initialised, starting with the library sizes being shown in the form of number of reads per replicate.
 
 ```{r}
 counts <- raw_count_mt
