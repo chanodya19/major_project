@@ -169,7 +169,7 @@ dgeList <- dgeList[genes2keep, ]
 
 ### Dispersion calculation 
 
-The following desig shows a matrix that states which samples belong to which group. The dispersion was then estimated, which allowed to proceed with differential expression analysis.
+The following design shows a matrix that states which samples belong to which group. The dispersion was then estimated, which allowed to proceed with differential expression analysis.
 
 ```{r}
 design <- model.matrix(~0 + group, data = dgeList$samples)
@@ -193,7 +193,7 @@ etResults <- etResults %>%
   as_tibble()
 ```
 
-In the final etResults table, I wanted to see which genes were overexpressed and which genes were downregulated using the code below.
+In the final etResults table, I wanted to see which genes were overexpressed and which genes were down regulated using the code below. This was for me to count results many genes were positively expressed and which were negatively expressed, but these are from all the filtered genes, these counts are not a representation of the finalised significant results. 
 
 ```{r}
 positive_count <- sum(etResults[, 2] > 0)
@@ -204,10 +204,8 @@ cat("Negative count:", negative_count, "\n")
 ```
 
 
-This was for me to count how many genes were positively expressed and which were negatively expressed
-
 Finally, we make the table with significantly expressed genes. The FDR was set to 0.01 while the logFC was set to more than 1.
-I also checked how many signicant genes are present and which are upregulated/downregulated.
+I also checked how many significant genes are present and which are upregulated/downregulated.
 
 ```{r}
 sigGenes <- filter(etResults, FDR< 0.01, abs(logFC) > 1)$Geneid
