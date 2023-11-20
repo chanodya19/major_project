@@ -17,6 +17,9 @@ Col0_SA_treated_24h_rep3.fastq.gz | 24h | Biological replicate 3 (rep3) of Arabi
 The final research goal was to identify the differentially expressed genes within the salicylic acid hormone pathway and different pathways regulated by salicylic acid.
 
 # Differential Expression Analysis.
+
+The file below highlights all the codes I used to do my analysis on the final article submission. The discussion and final analysis is discussed in the a1881267_majorproject article. 
+
 ---
 title: "DEanalysis_a1881267"
 author: "Chano Ranwala"
