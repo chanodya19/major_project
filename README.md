@@ -18,7 +18,7 @@ The final research goal was to identify the differentially expressed genes withi
 
 # Differential Expression Analysis.
 
-The file below highlights all the codes I used to do my analysis on the final article submission. 
+The file below highlights all the codes I used to do my analysis on the final article submission. All other segments such as introduction, methods and further analysis  (DAVID tool related works) is mentioned on the word document attached in the assignment submission.
 
 ---
 title: "DEanalysis_a1881267"
